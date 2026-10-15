@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Balloon App</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Common Page Styling */
+        .page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Page 1 Specific Styling */
+        #page1 {
+            background-color: #f0f2f5;
+            z-index: 2;
+            opacity: 1;
+        }
+
+        /* Page 2 Specific Styling (Blue Screen) */
+        #page2 {
+            background-color: #007bff;
+            z-index: 1;
+            opacity: 0;
+            pointer-events: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Page Active State */
+        .page.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 2;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .btn-click {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-click:hover {
+            background-color: #218838;
+        }
+
+        .btn-reset {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background-color: #c82333;
+        }
+
+        .btn-play {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-play:hover {
+            background-color: #e0a96d;
+        }
+
+        /* Container for controls on page 2 */
+        .controls {
+            display: flex;
+            gap: 15px;
+            z-index: 10; /* Ensures buttons stay above the balloons */
+        }
+
+        /* Balloon Elements */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 60px;
+            height: 75px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            animation: floatUp 4s linear forwards;
+        }
+
+        /* Balloon String */
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -12px;
+            left: 28px;
+            width: 2px;
+            height: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(10deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FIRST PAGE -->
+    <div id="page1" class="page active">
+        <button class="btn-click" onclick="navigateTo('page2')">Click Me</button>
+    </div>
+
+    <!-- SECOND PAGE (BLUE SCREEN) -->
+    <div id="page2" class="page">
+        <div class="controls">
+            <button class="btn-play" onclick="spawnBalloons()">Play Me</button>
+            <button class="btn-reset" onclick="navigateTo('page1')">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to switch between pages
+        function navigateTo(pageId) {
+            // Remove active class from all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Add active class to target page
+            document.getElementById(pageId).classList.add('active');
+
+            // If navigating back to page 1, clear out any remaining balloons
+            if (pageId === 'page1') {
+                document.querySelectorAll('.balloon').forEach(b => b.remove());
+            }
+        }
+
+        // Function to generate floating balloons
+        function spawnBalloons() {
+            const page2 = document.getElementById('page2');
+            const balloonColors = ['#ff4d4d', '#ff9933', '#ffff33', '#33cc33', '#ff3399', '#cc33ff'];
+
+            // Create 15 balloons at once
+            for (let i = 0; i < 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.classList.add('balloon');
+
+                // Randomise appearance and position
+                const randomColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                const randomLeft = Math.random() * 90; // percentage from left side
+                const randomDelay = Math.random() * 1.5; // staggered start times
+                const randomDuration = 3 + Math.random() * 2; // speeds between 3s and 5s
+
+                balloon.style.backgroundColor = randomColor;
+                balloon.style.left = randomLeft + '%';
+                balloon.style.animationDelay = randomDelay + 's';
+                balloon.style.animationDuration = randomDuration + 's';
+
+                // Automatically remove the balloon from DOM after animation finishes
+                balloon.addEventListener('animationend', () => {
+                    balloon.remove();
+                });
+
+                page2.appendChild(balloon);
+            }
+        }
+    </script>
+</body>
+</html>

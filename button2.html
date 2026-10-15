@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How Do You Do?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 60px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 0 10px;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-good {
+            background-color: #28a745; /* Green */
+        }
+        .btn-good:hover {
+            background-color: #218838;
+        }
+        .btn-bad {
+            background-color: #dc3545; /* Red */
+        }
+        .btn-bad:hover {
+            background-color: #c82333;
+        }
+        #output {
+            margin-top: 40px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>How do you do?</h1>
+
+    <!-- Two separate choice buttons -->
+    <button class="btn btn-good" onclick="reply('Good', 'green')">Good</button>
+    <button class="btn btn-bad" onclick="reply('Bad', 'red')">Bad</button>
+
+    <!-- The result displays here -->
+    <div id="output"></div>
+
+    <script>
+        // This function takes the text and color dynamically based on which button is clicked
+        function reply(statusText, textColor) {
+            const outputDiv = document.getElementById("output");
+            
+            outputDiv.textContent = statusText;
+            outputDiv.style.color = textColor;
+        }
+    </script>
+
+</body>
+</html>

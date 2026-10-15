@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How Do You Do?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 60px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            margin: 0;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.1s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn-good { background-color: #28a745; }
+        .btn-bad { background-color: #dc3545; }
+        
+        .input-section {
+            margin-top: 25px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 55%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type="color"] {
+            width: 45px;
+            height: 42px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        #output {
+            margin-top: 40px;
+            font-size: 36px;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        #output.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>How do you do?</h1>
+
+        <!-- Quick Choice Buttons -->
+        <button class="btn btn-good" onclick="handleMood('Good', '#d4edda', '#155724')">Good</button>
+        <button class="btn btn-bad" onclick="handleMood('Bad', '#f8d7da', '#721c24')">Bad</button>
+
+        <!-- Custom Section -->
+        <div class="input-section">
+            <div class="input-group">
+                <input type="text" id="custom-mood" placeholder="Type a mood or keyword...">
+                <!-- Color picker element -->
+                <input type="color" id="custom-color" value="#e2e3e5" title="Choose a background color">
+            </div>
+            <button class="btn btn-submit" onclick="submitCustomMood()">Submit Mood</button>
+        </div>
+
+        <!-- The animated result display -->
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function handleMood(statusText, bgColor, textColor) {
+            const outputDiv = document.getElementById("output");
+            
+            outputDiv.classList.remove("show");
+            
+            setTimeout(() => {
+                outputDiv.textContent = statusText;
+                outputDiv.style.color = textColor;
+                document.body.style.backgroundColor = bgColor;
+                outputDiv.classList.add("show");
+            }, 200);
+        }
+
+        function submitCustomMood() {
+            const inputField = document.getElementById("custom-mood");
+            const colorPicker = document.getElementById("custom-color");
+            
+            let mood = inputField.value.trim();
+            if (mood === "") return;
+
+            // Convert to lowercase to make checking easier (e.g., "Tired" vs "tired")
+            let lowerMood = mood.toLowerCase();
+            
+            let finalBgColor;
+            let finalTextColor;
+
+            // 1. Keyword Trigger Check
+            if (lowerMood === "tired") {
+                finalBgColor = "#e2d4f0";  // Soft Purple
+                finalTextColor = "#4a154b"; // Dark Purple
+            } else if (lowerMood === "happy") {
+                finalBgColor = "#fff3cd";  // Soft Yellow
+                finalTextColor = "#856404"; // Dark Yellow/Brown
+            } else {
+                // 2. Custom User Selections if no keyword matches
+                finalBgColor = colorPicker.value;
+                finalTextColor = "#333333"; // Default readable text dark gray
+            }
+            
+            // Execute the update
+            handleMood(mood, finalBgColor, finalTextColor);
+            
+            // Clear input box
+            inputField.value = "";
+        }
+    </script>
+
+</body>
+</html>

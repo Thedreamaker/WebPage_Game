@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How Do You Do?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 60px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 30px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- The Button -->
+    <button onclick="showStatus()">How do you do?</button>
+
+    <!-- Where the result will appear -->
+    <div id="output"></div>
+
+    <script>
+        function showStatus() {
+            const outputDiv = document.getElementById("output");
+            
+            // Randomly pick true (good) or false (bad)
+            const isGood = Math.random() < 0.5;
+
+            if (isGood) {
+                outputDiv.textContent = "Good";
+                outputDiv.style.color = "green";
+            } else {
+                outputDiv.textContent = "Bad";
+                outputDiv.style.color = "red";
+            }
+        }
+    </script>
+
+</body>
+</html>

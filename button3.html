@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>How Do You Do?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 60px;
+            /* Smoothly transition background and text colors over 0.5 seconds */
+            transition: background-color 0.5s ease, color 0.5s ease;
+            margin: 0;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            margin: 5px 10px;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.1s ease;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn-good { background-color: #28a745; }
+        .btn-bad { background-color: #dc3545; }
+        
+        .input-section {
+            margin-top: 25px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 60%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+
+        #output {
+            margin-top: 40px;
+            font-size: 36px;
+            font-weight: bold;
+            /* Setup the animation tracking hidden/visible states */
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        /* Class added by JavaScript to trigger the pop-in animation */
+        #output.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>How do you do?</h1>
+
+        <!-- Quick Choice Buttons -->
+        <button class="btn btn-good" onclick="handleMood('Good', '#d4edda', '#155724')">Good</button>
+        <button class="btn btn-bad" onclick="handleMood('Bad', '#f8d7da', '#721c24')">Bad</button>
+
+        <!-- Custom Text Input Box -->
+        <div class="input-section">
+            <input type="text" id="custom-mood" placeholder="Or type your custom mood...">
+            <button class="btn btn-submit" onclick="submitCustomMood()">Submit</button>
+        </div>
+
+        <!-- The animated result display -->
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function handleMood(statusText, bgColor, textColor) {
+            const outputDiv = document.getElementById("output");
+            
+            // 1. Reset animation class briefly so it can re-trigger on new clicks
+            outputDiv.classList.remove("show");
+            
+            // Use a tiny timeout to let the browser register the reset, then apply changes
+            setTimeout(() => {
+                outputDiv.textContent = statusText;
+                outputDiv.style.color = textColor;
+                
+                // Change page background color
+                document.body.style.backgroundColor = bgColor;
+                
+                // 2. Add class to kick off the fade-and-slide animation
+                outputDiv.classList.add("show");
+            }, 500);
+        }
+
+        function submitCustomMood() {
+            const inputField = document.getElementById("custom-mood");
+            const mood = inputField.value.trim();
+            
+            if (mood === "") return; // Do nothing if input is empty
+            
+            // Default styling for custom text responses
+            handleMood(mood, "#e2e3e5", "#383d41");
+            inputField.value = ""; // Clear input box after submitting
+        }
+    </script>
+
+</body>
+</html>
